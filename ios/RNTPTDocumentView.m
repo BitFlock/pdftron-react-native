@@ -6394,4 +6394,25 @@ NS_ASSUME_NONNULL_END
     }
 }
 
+- (void)setWatermark:(NSString *)text
+{
+    if (!text || text.length == 0) {
+        return;
+    }
+
+    PTPDFViewCtrl *pdfViewCtrl = self.documentViewController.pdfViewCtrl;
+
+    @try {
+        PTPDFDoc *doc = [pdfViewCtrl GetDoc];
+        [doc InitSecurityHandler];
+        PTStamper *s = [[PTStamper alloc] initWithSize_type: e_ptrelative_scale a: 1 b: 1];
+        [s SetRotation: 45.0];
+        [s SetOpacity: 0.15];
+        PTPageSet *set = [[PTPageSet alloc] initWithRange_start: 1 range_end: [doc GetPageCount] filter: e_ptall];
+        [s StampText: doc src_txt: text dest_pages: set];
+    } @catch (NSException *exception) {
+        NSLog(@"Exception: %@, %@", exception.name, exception.reason);
+    }
+}
+
 @end

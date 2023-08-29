@@ -2006,4 +2006,15 @@ RCT_CUSTOM_VIEW_PROPERTY(signatureColors, NSArray, RNTPTDocumentView)
     [self.documentViews removeObjectForKey:documentView.reactTag];
 }
 
+
+- (void)setWatermarkForDocumentViewTag:(NSNumber *)tag text:(NSString *)text
+{
+    RNTPTDocumentView *documentView = self.documentViews[tag];
+    if (documentView) {
+        [documentView setWatermark:text];
+    } else {
+        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Unable to find DocumentView for tag" userInfo:nil];
+    }
+}
+
 @end

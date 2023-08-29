@@ -1440,4 +1440,20 @@ RCT_REMAP_METHOD(setFormFieldHighlightColor,
         reject(@"set_form_field_highlight_color", @"Failed to set form field highlight color", [self errorFromException:exception]);
     }
 }
+
+RCT_REMAP_METHOD(setWatermark,
+                 setWatermarkForDocumentViewTag:(nonnull NSNumber *)tag
+                 text:(NSString *)text
+                 resolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try {
+        [[self documentViewManager] setWatermarkForDocumentViewTag:tag text:text];
+        resolve(nil);
+    }
+    @catch (NSException *exception) {
+        reject(@"set_watermark", @"Failed to set watermark", [self errorFromException:exception]);
+    }
+}
+
 @end
