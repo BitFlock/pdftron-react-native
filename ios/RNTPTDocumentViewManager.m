@@ -1817,6 +1817,16 @@ RCT_CUSTOM_VIEW_PROPERTY(signatureColors, NSArray, RNTPTDocumentView)
     }
 }
 
+- (void)setWatermarkForDocumentViewTag:(NSNumber *)tag text:(NSString *)text
+{
+    RNTPTDocumentView *documentView = self.documentViews[tag];
+    if (documentView) {
+        [documentView setWatermark:text];
+    } else {
+        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Unable to find DocumentView for tag" userInfo:nil];
+    }
+}
+
 - (void)setColorPostProcessModeForDocumentViewTag:(NSNumber *)tag colorPostProcessMode:(NSString *)colorPostProcessMode
 {
     RNTPTDocumentView *documentView = self.documentViews[tag];
@@ -2004,17 +2014,6 @@ RCT_CUSTOM_VIEW_PROPERTY(signatureColors, NSArray, RNTPTDocumentView)
 - (void)documentViewDetachedFromWindow:(RNTPTDocumentView *)documentView
 {
     [self.documentViews removeObjectForKey:documentView.reactTag];
-}
-
-
-- (void)setWatermarkForDocumentViewTag:(NSNumber *)tag text:(NSString *)text
-{
-    RNTPTDocumentView *documentView = self.documentViews[tag];
-    if (documentView) {
-        [documentView setWatermark:text];
-    } else {
-        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Unable to find DocumentView for tag" userInfo:nil];
-    }
 }
 
 @end
