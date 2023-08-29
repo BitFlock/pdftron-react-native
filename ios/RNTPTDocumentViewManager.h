@@ -139,6 +139,8 @@
 
 - (void)setWatermarkForDocumentViewTag:(NSNumber *)tag text:(NSString *)text;
 
+- (void)appendForDocumentViewTag:(NSNumber *)tag document:(NSString *)document base64Extension:(NSString *)base64Extension;
+
 - (void)setColorPostProcessModeForDocumentViewTag:(NSNumber *)tag colorPostProcessMode:(NSString *)colorPostProcessMode;
 
 - (void)setColorPostProcessColorsForDocumentViewTag:(NSNumber *)tag whiteColor:(NSDictionary *)whiteColor blackColor:(NSDictionary *)blackColor;

@@ -2951,7 +2951,6 @@ NS_ASSUME_NONNULL_END
     }
 
     PTPDFViewCtrl *pdfViewCtrl = self.documentViewController.pdfViewCtrl;
-
     @try {
         PTPDFDoc *doc = [pdfViewCtrl GetDoc];
         [doc InitSecurityHandler];
@@ -2960,6 +2959,43 @@ NS_ASSUME_NONNULL_END
         [s SetOpacity: 0.15];
         PTPageSet *set = [[PTPageSet alloc] initWithRange_start: 1 range_end: [doc GetPageCount] filter: e_ptall];
         [s StampText: doc src_txt: text dest_pages: set];
+    } @catch (NSException *exception) {
+        NSLog(@"Exception: %@, %@", exception.name, exception.reason);
+    }
+}
+
+- (void)append:(NSString *)document base64Extension:(NSString *)base64Extension
+{
+    if (!document || document.length == 0) {
+        return;
+    }
+
+    if (!base64Extension || base64Extension.length == 0) {
+        return;
+    }
+
+    NSURL* fileURL;
+    NSData *data = [[NSData alloc] initWithBase64EncodedString:document options:0];
+
+    NSMutableString *path = [[NSMutableString alloc] init];
+    [path appendFormat:@"%@tmp%@%@", NSTemporaryDirectory(), [[NSUUID UUID] UUIDString], base64Extension];
+
+    fileURL = [NSURL fileURLWithPath:path isDirectory:NO];
+    NSError* error;
+    [data writeToURL:fileURL options:NSDataWritingAtomic error:&error];
+    if (error) {
+        NSLog(@"Error: There was an error while trying to create a temporary file for base64 string. %@", error.localizedDescription);
+        return;
+    }
+
+    [self.tempFilePaths addObject:path];
+
+    PTPDFViewCtrl *pdfViewCtrl = self.documentViewController.pdfViewCtrl;
+    @try {
+        PTPDFDoc *doc = [pdfViewCtrl GetDoc];
+        [doc InitSecurityHandler];
+        PTPDFDoc *in_doc = [[PTPDFDoc alloc] initWithFilepath:path];
+        [doc InsertPages: [doc GetPageCount] src_doc: in_doc start_page: 1 end_page: [in_doc GetPageCount] flag: e_ptinsert_none];
     } @catch (NSException *exception) {
         NSLog(@"Exception: %@, %@", exception.name, exception.reason);
     }

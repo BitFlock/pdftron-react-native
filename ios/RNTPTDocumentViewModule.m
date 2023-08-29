@@ -1110,6 +1110,22 @@ RCT_REMAP_METHOD(setWatermark,
     }
 }
 
+RCT_REMAP_METHOD(append,
+                 appendForDocumentViewTag:(nonnull NSNumber *)tag
+                 document:(NSString *)document
+                 base64Extension:(NSString *)base64Extension
+                 resolver:(RCTPromiseResolveBlock)resolve
+                 rejecter:(RCTPromiseRejectBlock)reject)
+{
+    @try {
+        [[self documentViewManager] appendForDocumentViewTag:tag document:document base64Extension:base64Extension];
+        resolve(nil);
+    }
+    @catch (NSException *exception) {
+        reject(@"set_watermark", @"Failed to append document", [self errorFromException:exception]);
+    }
+}
+
 RCT_REMAP_METHOD(setColorPostProcessMode,
                  setColorPostProcessModeForDocumentViewTag: (nonnull NSNumber *)tag
                  colorPostProcessMode:(NSString *)colorPostProcessMode

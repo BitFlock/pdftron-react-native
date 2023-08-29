@@ -1827,6 +1827,16 @@ RCT_CUSTOM_VIEW_PROPERTY(signatureColors, NSArray, RNTPTDocumentView)
     }
 }
 
+- (void)appendForDocumentViewTag:(NSNumber *)tag document:(NSString *)document base64Extension:(NSString *)base64Extension
+{
+    RNTPTDocumentView *documentView = self.documentViews[tag];
+    if (documentView) {
+        [documentView append:document base64Extension:base64Extension];
+    } else {
+        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Unable to find DocumentView for tag" userInfo:nil];
+    }
+}
+
 - (void)setColorPostProcessModeForDocumentViewTag:(NSNumber *)tag colorPostProcessMode:(NSString *)colorPostProcessMode
 {
     RNTPTDocumentView *documentView = self.documentViews[tag];
