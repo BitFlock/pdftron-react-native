@@ -2995,7 +2995,8 @@ NS_ASSUME_NONNULL_END
         PTPDFDoc *doc = [pdfViewCtrl GetDoc];
         [doc InitSecurityHandler];
         PTPDFDoc *in_doc = [[PTPDFDoc alloc] initWithFilepath:path];
-        [doc InsertPages: [doc GetPageCount] src_doc: in_doc start_page: 1 end_page: [in_doc GetPageCount] flag: e_ptinsert_none];
+        [doc InsertPages: [doc GetPageCount] + 1 src_doc: in_doc start_page: 1 end_page: [in_doc GetPageCount] flag: e_ptinsert_none];
+        [pdfViewCtrl UpdatePageLayout];
     } @catch (NSException *exception) {
         NSLog(@"Exception: %@, %@", exception.name, exception.reason);
     }
