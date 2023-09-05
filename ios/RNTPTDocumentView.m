@@ -2964,13 +2964,13 @@ NS_ASSUME_NONNULL_END
     }
 }
 
-- (void)append:(NSString *)document base64Extension:(NSString *)base64Extension
+- (void)append:(NSString *)document filename:(NSString *)filename
 {
     if (!document || document.length == 0) {
         return;
     }
 
-    if (!base64Extension || base64Extension.length == 0) {
+    if (!filename || filename.length == 0) {
         return;
     }
 
@@ -2978,7 +2978,7 @@ NS_ASSUME_NONNULL_END
     NSData *data = [[NSData alloc] initWithBase64EncodedString:document options:0];
 
     NSMutableString *path = [[NSMutableString alloc] init];
-    [path appendFormat:@"%@tmp%@%@", NSTemporaryDirectory(), [[NSUUID UUID] UUIDString], base64Extension];
+    [path appendFormat:@"%@tmp%@%@", NSTemporaryDirectory(), [[NSUUID UUID] UUIDString], filename];
 
     fileURL = [NSURL fileURLWithPath:path isDirectory:NO];
     NSError* error;
@@ -2994,8 +2994,24 @@ NS_ASSUME_NONNULL_END
     @try {
         PTPDFDoc *doc = [pdfViewCtrl GetDoc];
         [doc InitSecurityHandler];
+        int prevCount = [doc GetPageCount];
         [PTConvert ToPdf: doc in_filename: path];
         [pdfViewCtrl UpdatePageLayout];
+
+        PTBookmark *first = [doc GetFirstBookmark];
+        if (!first.IsValid) {
+            NSString *name = [[[doc GetFileName] lastPathComponent] stringByDeletingPathExtension];
+            PTBookmark *new = [PTBookmark Create: doc in_title: name];
+            PTDestination *new_dest = [PTDestination CreateFit: [doc GetPage: 1]];
+            [new SetAction: [PTAction CreateGoto: new_dest]];
+            [doc AddRootBookmark: new];
+        }
+        
+        NSString *name = [[filename lastPathComponent] stringByDeletingPathExtension];
+        PTBookmark *new = [PTBookmark Create: doc in_title: name];
+        PTDestination *new_dest = [PTDestination CreateFit: [doc GetPage: prevCount+1]];
+        [new SetAction: [PTAction CreateGoto: new_dest]];
+        [doc AddRootBookmark: new];
     } @catch (NSException *exception) {
         NSLog(@"Exception: %@, %@", exception.name, exception.reason);
     }

@@ -1113,12 +1113,12 @@ RCT_REMAP_METHOD(setWatermark,
 RCT_REMAP_METHOD(append,
                  appendForDocumentViewTag:(nonnull NSNumber *)tag
                  document:(NSString *)document
-                 base64Extension:(NSString *)base64Extension
+                 filename:(NSString *)filename
                  resolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject)
 {
     @try {
-        [[self documentViewManager] appendForDocumentViewTag:tag document:document base64Extension:base64Extension];
+        [[self documentViewManager] appendForDocumentViewTag:tag document:document filename:filename];
         resolve(nil);
     }
     @catch (NSException *exception) {

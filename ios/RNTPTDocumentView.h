@@ -678,7 +678,7 @@ static NSString * const PTSignaturesManager_signatureDirectory = @"PTSignaturesM
 
 - (void)setWatermark:(NSString *)text;
 
-- (void)append:(NSString *)document base64Extension:(NSString *)base64Extension;
+- (void)append:(NSString *)document filename:(NSString *)filename;
 
 - (void)setColorPostProcessMode:(NSString *)colorPostProcessMode;
 

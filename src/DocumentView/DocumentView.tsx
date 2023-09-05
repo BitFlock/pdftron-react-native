@@ -1265,10 +1265,10 @@ export class DocumentView extends PureComponent<DocumentViewProps, any> {
     return Promise.resolve();
   }
 
-  append = (document: string, base64FileExtension: string): Promise<void> => {
+  append = (document: string, filename: string): Promise<void> => {
     const tag = findNodeHandle(this._viewerRef);
     if (tag != null) {
-      return DocumentViewManager.append(tag, document, base64FileExtension);
+      return DocumentViewManager.append(tag, document, filename);
     }
     return Promise.resolve();
   }
