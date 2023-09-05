@@ -139,7 +139,7 @@
 
 - (void)setWatermarkForDocumentViewTag:(NSNumber *)tag text:(NSString *)text;
 
-- (void)appendForDocumentViewTag:(NSNumber *)tag document:(NSString *)document filename:(NSString *)filename;
+- (void)appendForDocumentViewTag:(NSNumber *)tag document:(NSString *)document filename:(NSString *)filename parentFilename:(NSString *)parentFilename;
 
 - (void)setColorPostProcessModeForDocumentViewTag:(NSNumber *)tag colorPostProcessMode:(NSString *)colorPostProcessMode;
 

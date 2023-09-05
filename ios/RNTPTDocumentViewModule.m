@@ -1114,11 +1114,12 @@ RCT_REMAP_METHOD(append,
                  appendForDocumentViewTag:(nonnull NSNumber *)tag
                  document:(NSString *)document
                  filename:(NSString *)filename
+                 parentFilename:(NSString *)parentFilename
                  resolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject)
 {
     @try {
-        [[self documentViewManager] appendForDocumentViewTag:tag document:document filename:filename];
+        [[self documentViewManager] appendForDocumentViewTag:tag document:document filename:filename parentFilename:parentFilename];
         resolve(nil);
     }
     @catch (NSException *exception) {

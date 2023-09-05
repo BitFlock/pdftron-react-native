@@ -1827,11 +1827,11 @@ RCT_CUSTOM_VIEW_PROPERTY(signatureColors, NSArray, RNTPTDocumentView)
     }
 }
 
-- (void)appendForDocumentViewTag:(NSNumber *)tag document:(NSString *)document filename:(NSString *)filename
+- (void)appendForDocumentViewTag:(NSNumber *)tag document:(NSString *)document filename:(NSString *)filename parentFilename:(NSString *)parentFilename
 {
     RNTPTDocumentView *documentView = self.documentViews[tag];
     if (documentView) {
-        [documentView append:document filename:filename];
+        [documentView append:document filename:filename parentFilename:parentFilename];
     } else {
         @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Unable to find DocumentView for tag" userInfo:nil];
     }

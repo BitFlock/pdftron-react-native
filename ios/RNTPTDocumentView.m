@@ -2964,7 +2964,7 @@ NS_ASSUME_NONNULL_END
     }
 }
 
-- (void)append:(NSString *)document filename:(NSString *)filename
+- (void)append:(NSString *)document filename:(NSString *)filename parentFilename:(NSString *)parentFilename
 {
     if (!document || document.length == 0) {
         return;
@@ -3000,7 +3000,7 @@ NS_ASSUME_NONNULL_END
 
         PTBookmark *first = [doc GetFirstBookmark];
         if (!first.IsValid) {
-            NSString *name = [[[doc GetFileName] lastPathComponent] stringByDeletingPathExtension];
+            NSString *name = [[parentFilename lastPathComponent] stringByDeletingPathExtension];
             PTBookmark *new = [PTBookmark Create: doc in_title: name];
             PTDestination *new_dest = [PTDestination CreateFit: [doc GetPage: 1]];
             [new SetAction: [PTAction CreateGoto: new_dest]];
