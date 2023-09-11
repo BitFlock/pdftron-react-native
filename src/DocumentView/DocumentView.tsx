@@ -1265,10 +1265,10 @@ export class DocumentView extends PureComponent<DocumentViewProps, any> {
     return Promise.resolve();
   }
 
-  append = (document: string, filename: string, parentFilename: string): Promise<void> => {
+  append = (document: string, filename: string, rootBookmark: string): Promise<void> => {
     const tag = findNodeHandle(this._viewerRef);
     if (tag != null) {
-      return DocumentViewManager.append(tag, document, filename, parentFilename);
+      return DocumentViewManager.append(tag, document, filename, rootBookmark);
     }
     return Promise.resolve();
   }

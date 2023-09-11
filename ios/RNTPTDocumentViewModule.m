@@ -1114,12 +1114,12 @@ RCT_REMAP_METHOD(append,
                  appendForDocumentViewTag:(nonnull NSNumber *)tag
                  document:(NSString *)document
                  filename:(NSString *)filename
-                 parentFilename:(NSString *)parentFilename
+                 rootBookmark:(NSString *)rootBookmark
                  resolver:(RCTPromiseResolveBlock)resolve
                  rejecter:(RCTPromiseRejectBlock)reject)
 {
     @try {
-        [[self documentViewManager] appendForDocumentViewTag:tag document:document filename:filename parentFilename:parentFilename];
+        [[self documentViewManager] appendForDocumentViewTag:tag document:document filename:filename rootBookmark:rootBookmark];
         resolve(nil);
     }
     @catch (NSException *exception) {

@@ -2964,7 +2964,24 @@ NS_ASSUME_NONNULL_END
     }
 }
 
-- (void)append:(NSString *)document filename:(NSString *)filename parentFilename:(NSString *)parentFilename
+void createRootBookmark(PTPDFDoc *doc, NSString *title) {
+    PTBookmark *new_bookmark = [PTBookmark Create: doc in_title: title];
+    PTDestination *new_dest = [PTDestination CreateFit: [doc GetPage: 1]];
+    [new_bookmark SetAction: [PTAction CreateGoto: new_dest]];
+    
+    PTBookmark *current = [doc GetFirstBookmark];
+    if (current.IsValid) {
+        for (; [current IsValid];) {
+            PTBookmark *bak = [current GetNext];
+            [current Unlink];
+            [new_bookmark AddChildWithBookmark:current];
+            current = bak;
+        }
+    }
+    [doc AddRootBookmark: new_bookmark];
+}
+
+- (void)append:(NSString *)document filename:(NSString *)filename rootBookmark:(NSString *)rootBookmark
 {
     if (!document || document.length == 0) {
         return;
@@ -2992,26 +3009,24 @@ NS_ASSUME_NONNULL_END
 
     PTPDFViewCtrl *pdfViewCtrl = self.documentViewController.pdfViewCtrl;
     @try {
+        NSString *title = [[filename lastPathComponent] stringByDeletingPathExtension];
+        PTPDFDoc *in_doc;
+        if ([[filename pathExtension] isEqualToString:@"pdf"]) {
+            in_doc = [[PTPDFDoc alloc] initWithFilepath:path];
+        } else {
+            in_doc = [[PTPDFDoc alloc] init];
+            [PTConvert ToPdf: in_doc in_filename: path];
+        }
+        createRootBookmark(in_doc, title);
+
         PTPDFDoc *doc = [pdfViewCtrl GetDoc];
         [doc InitSecurityHandler];
-        int prevCount = [doc GetPageCount];
-        [PTConvert ToPdf: doc in_filename: path];
-        [pdfViewCtrl UpdatePageLayout];
-
-        PTBookmark *first = [doc GetFirstBookmark];
-        if (!first.IsValid) {
-            NSString *name = [[parentFilename lastPathComponent] stringByDeletingPathExtension];
-            PTBookmark *new = [PTBookmark Create: doc in_title: name];
-            PTDestination *new_dest = [PTDestination CreateFit: [doc GetPage: 1]];
-            [new SetAction: [PTAction CreateGoto: new_dest]];
-            [doc AddRootBookmark: new];
+        if (rootBookmark && rootBookmark.length > 0) {
+            createRootBookmark(doc, rootBookmark);
         }
+        [doc InsertPages: [doc GetPageCount] + 1 src_doc: in_doc start_page: 1 end_page: [in_doc GetPageCount] flag: e_ptinsert_bookmark];
         
-        NSString *name = [[filename lastPathComponent] stringByDeletingPathExtension];
-        PTBookmark *new = [PTBookmark Create: doc in_title: name];
-        PTDestination *new_dest = [PTDestination CreateFit: [doc GetPage: prevCount+1]];
-        [new SetAction: [PTAction CreateGoto: new_dest]];
-        [doc AddRootBookmark: new];
+        [pdfViewCtrl UpdatePageLayout];
     } @catch (NSException *exception) {
         NSLog(@"Exception: %@, %@", exception.name, exception.reason);
     }
