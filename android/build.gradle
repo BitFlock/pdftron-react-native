@@ -27,6 +27,7 @@ apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-kapt'
 
 android {
+    namespace "com.pdftron.reactnative"
     compileSdkVersion 33
     buildToolsVersion "30.0.2"
 
