@@ -137,6 +137,8 @@
 
 - (void)setBackgroundColorForDocumentViewTag:(NSNumber *)tag backgroundColor:(NSDictionary *)backgroundColor;
 
+- (void)setControlsHiddenForDocumentViewTag:(NSNumber *)tag hidden:(BOOL)hidden;
+
 - (void)setWatermarkForDocumentViewTag:(NSNumber *)tag text:(NSString *)text;
 
 - (void)appendForDocumentViewTag:(NSNumber *)tag document:(NSString *)document filename:(NSString *)filename rootBookmark:(NSString *)rootBookmark;
