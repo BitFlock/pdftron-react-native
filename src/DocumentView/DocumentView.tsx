@@ -1267,6 +1267,14 @@ export class DocumentView extends PureComponent<DocumentViewProps, any> {
     return Promise.resolve();
   }
 
+  setControlsHidden = (hidden: boolean): Promise<void> => {
+    const tag = findNodeHandle(this._viewerRef);
+    if (tag != null) {
+      return DocumentViewManager.setControlsHidden(tag, hidden);
+    }
+    return Promise.resolve();
+  }
+
   append = (document: string, filename: string, rootBookmark: string): Promise<void> => {
     const tag = findNodeHandle(this._viewerRef);
     if (tag != null) {

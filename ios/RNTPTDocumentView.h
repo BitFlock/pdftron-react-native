@@ -420,7 +420,7 @@ static NSString * const PTSignaturesManager_signatureDirectory = @"PTSignaturesM
 @property (nonatomic, assign) BOOL pageIndicatorEnabled;
 @property (nonatomic, assign) BOOL keyboardShortcutsEnabled;
 @property (nonatomic, assign) BOOL hideToolbarsOnTap;
-@property (nonatomic, assign) BOOL hideToolbarsOnAppear;
+@property (nonatomic, assign) BOOL controlsHidden;
 @property (nonatomic, assign) BOOL documentSliderEnabled;
 @property (nonatomic, assign) BOOL pageIndicatorShowsOnPageChange;
 @property (nonatomic, assign) BOOL pageIndicatorShowsWithControls;

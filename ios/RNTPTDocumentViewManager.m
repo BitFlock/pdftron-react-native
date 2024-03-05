@@ -160,7 +160,7 @@ RCT_CUSTOM_VIEW_PROPERTY(hideToolbarsOnTap, BOOL, RNTPTDocumentView)
 RCT_CUSTOM_VIEW_PROPERTY(hideToolbarsOnAppear, BOOL, RNTPTDocumentView)
 {
     if (json) {
-        view.hideToolbarsOnAppear = [RCTConvert BOOL:json];
+        view.controlsHidden = [RCTConvert BOOL:json];
     }
 }
 
@@ -1819,6 +1819,16 @@ RCT_CUSTOM_VIEW_PROPERTY(signatureColors, NSArray, RNTPTDocumentView)
     RNTPTDocumentView *documentView = self.documentViews[tag];
     if (documentView) {
         [documentView setBackgroundColor:backgroundColor];
+    } else {
+        @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Unable to find DocumentView for tag" userInfo:nil];
+    }
+}
+
+- (void)setControlsHiddenForDocumentViewTag:(NSNumber *)tag hidden:(BOOL)hidden
+{
+    RNTPTDocumentView *documentView = self.documentViews[tag];
+    if (documentView) {
+        [documentView setControlsHidden:hidden];
     } else {
         @throw [NSException exceptionWithName:NSInvalidArgumentException reason:@"Unable to find DocumentView for tag" userInfo:nil];
     }

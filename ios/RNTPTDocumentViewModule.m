@@ -1095,6 +1095,21 @@ RCT_REMAP_METHOD(setBackgroundColor,
     }
 }
 
+RCT_REMAP_METHOD(setControlsHidden,
+                 setControlsHiddenForDocumentViewTag: (nonnull NSNumber *)tag
+                 hidden:(BOOL)hidden
+                 resolver:(RCTPromiseResolveBlock)resolve
+                 rejector:(RCTPromiseRejectBlock)reject)
+{
+    @try {
+        [[self documentViewManager] setControlsHiddenForDocumentViewTag:tag hidden:hidden];
+        resolve(nil);
+    }
+    @catch (NSException *exception) {
+        reject(@"set_draw_annotations", @"Failed to set draw annotations", [self errorFromException:exception]);
+    }
+}
+
 RCT_REMAP_METHOD(setWatermark,
                  setWatermarkForDocumentViewTag:(nonnull NSNumber *)tag
                  text:(NSString *)text
