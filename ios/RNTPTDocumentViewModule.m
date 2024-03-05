@@ -1106,7 +1106,7 @@ RCT_REMAP_METHOD(setControlsHidden,
         resolve(nil);
     }
     @catch (NSException *exception) {
-        reject(@"set_draw_annotations", @"Failed to set draw annotations", [self errorFromException:exception]);
+        reject(@"set_controls_hidden", @"Failed to hide controls", [self errorFromException:exception]);
     }
 }
 
