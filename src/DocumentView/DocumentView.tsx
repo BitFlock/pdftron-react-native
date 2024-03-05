@@ -59,6 +59,7 @@ const propTypes = {
   topToolbarEnabled: PropTypes.bool,
   bottomToolbarEnabled: PropTypes.bool,
   hideToolbarsOnTap: PropTypes.bool,
+  hideToolbarsOnAppear: PropTypes.bool,
   documentSliderEnabled: PropTypes.bool,
   downloadDialogEnabled: PropTypes.bool,
   pageIndicatorEnabled: PropTypes.bool,

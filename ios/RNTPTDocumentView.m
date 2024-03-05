@@ -120,6 +120,7 @@ NS_ASSUME_NONNULL_END
     
     _bottomToolbarEnabled = YES;
     _hideToolbarsOnTap = YES;
+    _hideToolbarsOnAppear = NO;
     
     _documentSliderEnabled = YES;
     
@@ -1984,6 +1985,13 @@ NS_ASSUME_NONNULL_END
     [self applyViewerSettings];
 }
 
+- (void)setHideToolbarsOnAppear:(BOOL)hideToolbarsOnAppear
+{
+    _hideToolbarsOnAppear = hideToolbarsOnAppear;
+    
+    [self applyViewerSettings];
+}
+
 -(void)setPresetsToolbarHidden:(BOOL)presetsToolbarHidden
 {
     _presetsToolbarHidden = presetsToolbarHidden;
@@ -2162,6 +2170,8 @@ NS_ASSUME_NONNULL_END
     documentViewController.navigationController.toolbarHidden = shouldHideNavigationBar;
     
     documentViewController.hidesControlsOnTap = self.hideToolbarsOnTap;
+
+    documentViewController.controlsHidden = self.hideToolbarsOnAppear;
     
     // Scrollbars.
     [self applyScrollbarVisibility:documentViewController];
