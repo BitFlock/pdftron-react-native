@@ -1,7 +1,7 @@
 {
   "name": "react-native-pdftron",
   "title": "React Native Pdftron",
-  "version": "3.0.3-36-brainloop-1.1.8",
+  "version": "3.0.4-5-brainloop-1.1.8",
   "description": "React Native Pdftron",
   "main": "./lib/index.js",
   "typings": "index.ts",
