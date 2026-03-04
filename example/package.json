@@ -16,7 +16,7 @@
     "deprecated-react-native-prop-types": "^2.3.0",
     "react": "^18.0.0",
     "react-native": "^0.69.1",
-    "react-native-pdftron": "github:PDFTron/pdftron-react-native"
+    "react-native-pdftron": "github:ApryseSDK/pdftron-react-native"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
@@ -24,6 +24,7 @@
     "@react-native-community/eslint-config": "^2.0.0",
     "@types/react": "^18.0.14",
     "@types/react-native": "^0.69.1",
+    "@types/prop-types": "^15.7.12",
     "babel-jest": "^26.6.3",
     "eslint": "^7.32.0",
     "jest": "^26.6.3",

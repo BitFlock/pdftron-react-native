@@ -1,5 +1,8 @@
 # PDFTron React Native Wrapper
 
+> [!IMPORTANT]
+> This repository serves as a wrapper around the native SDKs. It exposes only a limited set of APIs intended for basic viewing, annotating and removing components from the out‑of‑box UI. Any advanced customization or access to lower‑level functionality should be performed directly through the native SDKs rather than this wrapper.
+
 - [API](API.md)
 - [Prerequisites](#prerequisites)
 - [Preview](#preview)
@@ -32,13 +35,13 @@ APIs are available on the [API page](API.md).
 
 Version `2.0.2` is the last stable release for the legacy UI.
 
-The release can be found here: https://github.com/PDFTron/pdftron-react-native/releases/tag/legacy-ui.
+The release can be found here: https://github.com/ApryseSDK/pdftron-react-native/releases/tag/legacy-ui.
 
 ## Pre-Java 17
 
 Version `3.0.3-38` is the last stable release for pre-Java 17.
 
-The release can be found here: https://github.com/PDFTron/pdftron-react-native/releases/tag/pre-java17.
+The release can be found here: https://github.com/ApryseSDK/pdftron-react-native/releases/tag/pre-java17.
 
 ## Installation
 
@@ -51,14 +54,14 @@ The release can be found here: https://github.com/PDFTron/pdftron-react-native/r
      In `MyApp` folder, install `react-native-pdftron` by calling:
 
      ```shell
-     yarn add github:PDFTron/pdftron-react-native
+     yarn add github:ApryseSDK/pdftron-react-native
      yarn install
      ```
 
      or
 
      ```shell
-     npm install github:PDFTron/pdftron-react-native --save
+     npm install github:ApryseSDK/pdftron-react-native --save
      npm install
      ```
 
@@ -82,102 +85,63 @@ The release can be found here: https://github.com/PDFTron/pdftron-react-native/r
 
 1. Add the following in your `android/app/build.gradle` file:
 
-   ```diff
-   android {
-       ndkVersion rootProject.ext.ndkVersion
+	```diff
+	defaultConfig {
+	    applicationId "com.example.myapp"
+	    minSdkVersion rootProject.ext.minSdkVersion
+	    targetSdkVersion rootProject.ext.targetSdkVersion
+	    versionCode 1
+	    versionName "1.0.0"
+
+	+   resValue("string", "PDFTRON_LICENSE_KEY", "\"LICENSE_KEY_GOES_HERE\"")
+	}
+	```
    
-       compileSdkVersion rootProject.ext.compileSdkVersion
+2. Add the following to your `android/app/src/main/AndroidManifest.xml` file:
 
-       defaultConfig {
-           applicationId "com.reactnativesample"
-           minSdkVersion rootProject.ext.minSdkVersion
-           targetSdkVersion rootProject.ext.targetSdkVersion
-           versionCode 1
-           versionName "1.0"
-           buildConfigField "boolean", "IS_NEW_ARCHITECTURE_ENABLED", isNewArchitectureEnabled().toString()
-   +       multiDexEnabled true
-   +       manifestPlaceholders = [pdftronLicenseKey:PDFTRON_LICENSE_KEY]
-       }
-       ...
-   }
-   ...
+	```diff
+	<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+      package="com.example.myapp">
+ 
+	  <!-- Required if you want to work with online documents -->
+	+ <uses-permission android:name="android.permission.INTERNET" />
+	  <!-- Required if you want to record audio annotations -->
+	+ <uses-permission android:name="android.permission.RECORD_AUDIO" />
+ 
+	  <application
+	    ...
+	+   android:largeHeap="true">
+	
+	    <!-- Add license key in meta-data tag here. This should be inside the application tag. -->
+	+   <meta-data
+	+     android:name="pdftron_license_key"
+	+     android:value="@string/PDFTRON_LICENSE_KEY" />
+	    ...
+      <activity
+	      ...
+	-     android:windowSoftInputMode="adjustResize"
+	+     android:windowSoftInputMode="adjustPan">
+      </activity>
+	```
 
-   dependencies {
-   +   implementation "androidx.multidex:multidex:2.0.1"
-       ...
-   }
-   ```
-   
-2. In your `android/gradle.properties` file, add the following line:
-   ```diff
-   # Add the PDFTRON_LICENSE_KEY variable here.
-   # For trial purposes leave it blank.
-   # For production add a valid commercial license key.
-   PDFTRON_LICENSE_KEY=
-   ```
-3. Add the following to your `android/app/src/main/AndroidManifest.xml` file:
-
-   ```diff
-   <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-     package="com.myapp">
-
-     <uses-permission android:name="android.permission.INTERNET" />
-     <!-- Required to read and write documents from device storage -->
-   + <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-     <!-- Required if you want to record audio annotations -->
-   + <uses-permission android:name="android.permission.RECORD_AUDIO" />
-
-     <application
-       ...
-   +   android:largeHeap="true"
-   +   android:usesCleartextTraffic="true">
-
-       <!-- Add license key in meta-data tag here. This should be inside the application tag. -->
-   +   <meta-data
-   +       android:name="pdftron_license_key"
-   +       android:value="${pdftronLicenseKey}"/>
-
-       <activity
-         ...
-   -     android:windowSoftInputMode="adjustResize"
-   +     android:windowSoftInputMode="adjustPan"
-   +     android:exported="true">
-         <intent-filter>
-             <action android:name="android.intent.action.MAIN" />
-             <category android:name="android.intent.category.LAUNCHER" />
-         </intent-filter>
-       </activity>
-       <activity android:name="com.facebook.react.devsupport.DevSettingsActivity" />
-     </application>
-   </manifest>
-   ```
-
-4. In your `android/app/src/main/java/com/myapp/MainApplication.java` file, change `Application` to `MultiDexApplication`:
-
-   ```diff
-   - import android.app.Application;
-   + import androidx.multidex.MultiDexApplication;
-   ...
-   - public class MainApplication extends Application implements ReactApplication {
-   + public class MainApplication extends MultiDexApplication implements ReactApplication {
-   ```
-
-5. Replace `App.js` (or `App.tsx`) with what is shown for [NPM](#Usage-NPM) or [GitHub](#Usage-Github)
-6. Finally in the root project directory, run `react-native run-android`.
+3. Replace `App.js` (or `App.tsx`) with what is shown for [NPM](#Usage-NPM) or [GitHub](#Usage-Github)
+4. Finally in the root project directory, run `react-native run-android`.
 
 ### iOS
-#### Note — January 2022
-**There is a new podspec file to use when integrating the PDFTron React Native Wrapper for iOS:**
-**https://pdftron.com/downloads/ios/react-native/latest.podspec**
 
-**Please update your `Podfile` accordingly.**
+> [!IMPORTANT]
+> As of March 2025, use of the podspec distributed specifically for the PDFTron React Native wrapper (`https://pdftron.com/downloads/ios/react-native/latest.podspec`) is deprecated and no longer maintained.
+>
+> Please update to the latest podspec provided for the wrapper as soon as possible (`https://www.pdftron.com/downloads/ios/cocoapods/xcframeworks/pdfnet/latest.podspec`)
+>
+> Please update your `Podfile` accordingly.
 
 1. Open `Podfile` in the `ios` folder, add the following line to the `target 'MyApp' do ... end` block:
 
     ```
     target 'MyApp' do
         # ...
-        pod 'PDFNet', podspec: 'https://pdftron.com/downloads/ios/react-native/latest.podspec'
+        pod 'PDFNet', podspec: 'https://www.pdftron.com/downloads/ios/cocoapods/xcframeworks/pdfnet/latest.podspec'
         # ...
     end
     ```
